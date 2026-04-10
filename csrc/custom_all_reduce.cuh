@@ -18,7 +18,12 @@ typedef __hip_bfloat16 nv_bfloat16;
 #include <cstdlib>
 #include <cstring>
 
+#include "stream_capture.h"
+
 namespace vllm {
+
+void stream_capture_get_stream_capture_status(cudaStream_t stream,
+                                              cudaStreamCaptureStatus* status);
 #define CUDACHECK(cmd)                                              \
   do {                                                              \
     cudaError_t e = cmd;                                            \
@@ -540,7 +545,7 @@ class CustomAllreduce {
 
     RankData* ptrs;
     cudaStreamCaptureStatus status;
-    CUDACHECK(cudaStreamIsCapturing(stream, &status));
+    stream_capture_get_stream_capture_status(stream, &status);
     if (status == cudaStreamCaptureStatusActive) {
       ptrs = d_rank_data_base_ + graph_unreg_buffers_.size();
       graph_unreg_buffers_.push_back(input);
