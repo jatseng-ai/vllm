@@ -3415,6 +3415,11 @@ class GPUModelRunner(
                 "after execute_model() returns None."
             )
 
+        from vllm.distributed.stream_capture import (
+            maybe_bump_rocm_stream_capture_forward_epoch,
+        )
+        maybe_bump_rocm_stream_capture_forward_epoch()
+
         if self.vllm_config.model_config.enable_return_routed_experts:
             capturer = RoutedExpertsCapturer.get_instance()
             if capturer is not None:

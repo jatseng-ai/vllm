@@ -302,6 +302,7 @@ set(VLLM_EXT_SRC
   "csrc/quantization/gguf/gguf_kernel.cu"
   "csrc/quantization/activation_kernels.cu"
   "csrc/cuda_utils_kernels.cu"
+  "csrc/stream_capture.cu"
   "csrc/custom_all_reduce.cu"
   "csrc/torch_bindings.cpp")
 
@@ -1182,6 +1183,7 @@ if(VLLM_GPU_LANG STREQUAL "HIP")
     ARCHITECTURES ${VLLM_GPU_ARCHES}
     USE_SABI 3
     WITH_SOABI)
+
 endif()
 
 # For CUDA and HIP builds also build the triton_kernels external package.

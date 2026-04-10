@@ -481,7 +481,11 @@ class GroupCoordinator:
         if curr_stream != stream:
             stream.wait_stream(curr_stream)
 
-        with torch.cuda.stream(stream), maybe_ca_context:
+        from vllm.distributed.stream_capture import vllm_graph_capture_stream_mark
+
+        with vllm_graph_capture_stream_mark(), torch.cuda.stream(
+            stream
+        ), maybe_ca_context:
             yield graph_capture_context
 
     def all_reduce(self, input_: torch.Tensor) -> torch.Tensor:

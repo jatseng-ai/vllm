@@ -1,5 +1,6 @@
 #include "cache.h"
 #include "cuda_utils.h"
+#include "stream_capture.h"
 #include "ops.h"
 #include "core/registration.h"
 
@@ -821,6 +822,16 @@ TORCH_LIBRARY_EXPAND(CONCAT(TORCH_EXTENSION_NAME, _cuda_utils), cuda_utils) {
       "get_max_shared_memory_per_block_device_attribute(int device_id) -> int");
   cuda_utils.impl("get_max_shared_memory_per_block_device_attribute",
                   &get_max_shared_memory_per_block_device_attribute);
+
+  cuda_utils.def("stream_capture_enter", &vllm::stream_capture_enter);
+  cuda_utils.impl("stream_capture_enter", &vllm::stream_capture_enter);
+  cuda_utils.def("stream_capture_leave", &vllm::stream_capture_leave);
+  cuda_utils.impl("stream_capture_leave", &vllm::stream_capture_leave);
+
+  cuda_utils.def("stream_capture_bump_forward_epoch",
+                 &vllm::stream_capture_bump_forward_epoch);
+  cuda_utils.impl("stream_capture_bump_forward_epoch",
+                  &vllm::stream_capture_bump_forward_epoch);
 }
 
 TORCH_LIBRARY_EXPAND(CONCAT(TORCH_EXTENSION_NAME, _custom_ar), custom_ar) {
